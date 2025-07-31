@@ -3,7 +3,7 @@ contribution to indi eqmod driver for astronomy. Modification for skywatcher wav
 
 indi eqmod driver is part of INDI/3rdparty drivers maintained and available here: https://github.com/indilib.
 
-The skywatcher mount wave150i use the skywatcher protocol and it is seen by the eqmod driver.
+The skywatcher mount wave150i uses the skywatcher protocol and it is seen by the eqmod driver.
 However, the stepper motor has parameters that slighly differ from those expected by the eqmod driver:
 The reference (Init) position is different for celestial RA axis from what is defined in the eqmod driver.
 Consequently, goto made before syncing to a correct target may be wrong. And before syncing the mount it's nice to perform a goto to the target...
