@@ -1,5 +1,5 @@
 # eqmod
-indi eqmod driver for astronomy. Modification for skywatcher wave150i mount
+contribution to indi eqmod driver for astronomy. Modification for skywatcher wave150i mount
 
 indi eqmod driver is part of INDI/3rdparty drivers maintained and available here: https://github.com/indilib.
 
@@ -11,4 +11,6 @@ This also implies wrong goto eastern and western limits as they are defined with
 
 The code available here is under testing and propose some modifications to handle wave150i mount.
 The modifications are activated by the macro "EQMODE_EXT" defined in skywatcher.h
+
+To use these codes, download the "eqmodebase.cpp skywatcher.cpp skywatcher.h" files in your indi-3rdparty/indi-eqmod directory AFTER making a copy of the original files. Recompile the driver by typing "make indi_eqmod_telescope" from "build-indi-3rdparty" directory.
 
