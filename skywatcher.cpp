@@ -321,16 +321,11 @@ void Skywatcher::Init()
         dispatch_command(GetAxisPosition, Axis1, nullptr);
         //read_eqmod();
         RAStepInit = Revu24str2long(response + 1);
-        
-        //LOGF_INFO("modifOC RAStepInit from mount %d %ld \n",RAStepInit,RAStepInit-0x800000);
 
-        //RAStepInit = 8388608; //modifOC
         dispatch_command(GetAxisPosition, Axis2, nullptr);
         //read_eqmod();
         DEStepInit = Revu24str2long(response + 1);
-        //LOGF_INFO("modifOC DEStepInit from mount %d %ld \n",DEStepInit,DEStepInit-0x800000);
-        //DEStepInit = 8388608; //modifOC
-        
+
         LOGF_DEBUG("%s() : Motors not initialized -- read Init steps RAInit=%ld DEInit = %ld",
                    __FUNCTION__, static_cast<long>(RAStepInit), static_cast<long>(DEStepInit));
         // Energize motors
@@ -366,14 +361,9 @@ void Skywatcher::Init()
         LOGF_WARN("%s() : Motors already initialized", __FUNCTION__);
         LOGF_WARN("%s() : Setting default Init steps --  RAInit=%ld DEInit = %ld", __FUNCTION__,
                   static_cast<long>(RAStepInit), static_cast<long>(DEStepInit));
-        //LOGF_INFO("modifOC %s() : Motors already initialized", __FUNCTION__);
-        //LOGF_INFO("modifOC %s() : Setting default Init steps --  RAInit=%ld DEInit = %ld", __FUNCTION__,
-                  static_cast<long>(RAStepInit), static_cast<long>(DEStepInit));
     }
     LOGF_DEBUG("%s() : Setting Home steps RAHome=%ld DEHome = %ld", __FUNCTION__,
                static_cast<long>(RAStepHome), static_cast<long>(DEStepHome));
-    //LOGF_INFO("modifOC %s() : Setting Home steps RAHome=%ld DEHome = %ld", __FUNCTION__,
-               //static_cast<long>(RAStepHome), static_cast<long>(DEStepHome));
 
     if (not(reconnect))
     {
@@ -621,8 +611,10 @@ void Skywatcher::InquireBoardVersion(char **boardinfo)
 #ifdef EQMODE_EXT
 void Skywatcher::SetMountDependantParameter(uint32_t mountCode)
 {
-// RAHomeInitOffset in hour:   RA default Home position is defined as RAStepHome = RAStepInit + RAHomeInitOffset/24.*RASteps360 (in step)
-// DEHomeInitOffset in degree: DE default Home position is defined as DEStepHome = DEStepInit + DEHomeInitOffset/360.*DESteps360 (in step)
+/*
+RAHomeInitOffset in hour:   RA default Home position is defined as RAStepHome = RAStepInit + RAHomeInitOffset/24.*RASteps360 (in step)
+DEHomeInitOffset in degree: DE default Home position is defined as DEStepHome = DEStepInit + DEHomeInitOffset/360.*DESteps360 (in step)
+*/
 
     // default settings
 
@@ -630,7 +622,7 @@ void Skywatcher::SetMountDependantParameter(uint32_t mountCode)
     DEHomeInitOffset = 90.;
     RAStepInit = 0x800000;
     DEStepInit = 0x800000;
-    //LOGF_INFO("modifOC SetMountDependantParameter %X %d %d\n",mountCode,RAStepInit,DEStepInit);
+
     // other settings
     switch (mountCode)
     {

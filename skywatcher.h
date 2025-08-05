@@ -14,7 +14,8 @@
     You should have received a copy of the GNU General Public License
     along with the Skywatcher Protocol INDI driver.  If not, see <http://www.gnu.org/licenses/>.
 */
-#define EQMODE_EXT //modifOC
+#define EQMODE_EXT 
+
 #pragma once
 
 #include "eqmoderror.h"

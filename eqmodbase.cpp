@@ -1444,15 +1444,8 @@ void EQMod::EncodersToRADec(uint32_t rastep, uint32_t destep, double lst, double
     HACurrent = EncoderToHours(rastep, zeroRAEncoder, totalRAEncoder, Hemisphere);
     RACurrent = HACurrent + lst;
 
-    
-    //LOGF_INFO("modifOC rzero_ra_encoder=%d, total_ra_encoder=%d\n",zeroRAEncoder,totalRAEncoder);
-    //LOGF_INFO("modifOC zeroDEEncoder=%d, totalDEEncoder=%d\n",zeroDEEncoder,totalDEEncoder); ;
-    //LOGF_INFO("modifOC rastep=%d, destep=%d, lst=%f\n",rastep,destep,lst);
-
     DECurrent = EncoderToDegrees(destep, zeroDEEncoder, totalDEEncoder, Hemisphere);
 
-    //LOGF_INFO("modifOC HACurrent=%f, RACurrent=%f\n",HACurrent,RACurrent);
-    //LOGF_INFO("modifOC DECurrent=%f\n",DECurrent);
     //IDLog("EncodersToRADec: destep=%6X zeroDEncoder=%6X totalDEEncoder=%6x DECurrent=%f\n", destep, zeroDEEncoder , totalDEEncoder, DECurrent);
     if (Hemisphere == NORTH)
     {
@@ -1463,7 +1456,6 @@ void EQMod::EncodersToRADec(uint32_t rastep, uint32_t destep, double lst, double
         }
         else
             p = PIER_WEST;
-        //LOGF_INFO("modifOC pier side %d (0=W, 1=E)\n",p);
     }
     else if ((DECurrent <= 90.0) || (DECurrent > 270.0))
     {
@@ -1477,20 +1469,7 @@ void EQMod::EncodersToRADec(uint32_t rastep, uint32_t destep, double lst, double
     HACurrent = rangeHA(HACurrent);
     RACurrent = range24(RACurrent);
     DECurrent = rangeDec(DECurrent);
-    //LOGF_INFO("modifOC apres range HACurrent=%f, RACurrent=%f, DECurrent=%f\n",HACurrent,RACurrent,DECurrent);
-    /*
-    { // ========================== modifOC test
-        double back_step;
-        //EncoderFromRA(double ratarget, TelescopePierSide p, double lst, uint32_t initstep,
-        //                    uint32_t totalstep, enum Hemisphere h)
-        back_step = EncoderFromRA(RACurrent, p, lst, zeroRAEncoder, totalRAEncoder, Hemisphere);
-        LOGF_INFO("modifOC rastep_back=%f %f\n",back_step,back_step-zeroRAEncoder);
-        // EncoderFromDec(double detarget, TelescopePierSide p, uint32_t initstep, uint32_t totalstep,
-        //                     enum Hemisphere h)
-        back_step = EncoderFromDec(DECurrent, p, zeroDEEncoder, totalDEEncoder, Hemisphere);
-        LOGF_INFO("modifOC destep_back=%f %f\n",back_step,back_step-zeroDEEncoder);
-    }
-    */
+
     *ra       = RACurrent;
     *de       = DECurrent;
     if (ha)
@@ -1515,7 +1494,7 @@ double EQMod::EncoderToHours(uint32_t step, uint32_t initstep, uint32_t totalste
         result = range24(result + 6.0);
     else
         result = range24((24 - result) + 6.0); 
-    //LOGF_INFO("modifOC WAVE150 encoder2hours step=%d, initstep=%d, totalstep=%d, result=%lf",step, initstep, totalstep,result);
+
     
 #else   
     if (step > initstep)
@@ -1532,7 +1511,7 @@ double EQMod::EncoderToHours(uint32_t step, uint32_t initstep, uint32_t totalste
         result = range24(result + 6.0);  
     else
         result = range24((24 - result) + 6.0); 
-    //LOGF_INFO("modifOC encoder2hours step=%d, initstep=%d, totalstep=%d, result=%f",step, initstep, totalstep,result);
+
 #endif
     
     
@@ -1595,7 +1574,7 @@ double EQMod::EncoderFromHour(double hour, uint32_t initstep, uint32_t totalstep
     else
         step = round(initstep - (((24.0 - shifthour) / 24.0) * totalstep));
    
-    //LOGF_INFO("modifOC hours2encoder shifthour=%f, initstep=%d, totalstep=%d, step=%f",shifthour, initstep, totalstep, step);
+
     return step;
 }
 
@@ -2003,6 +1982,7 @@ bool EQMod::Goto(double r, double d)
         gotoparams.limiteast        = mount->GetRANorthEncoder() + delta; 
         gotoparams.limitwest        = mount->GetRANorthEncoder() - delta; 
     }
+    LOGF_INFO("Setting Eqmod Goto encoder limits to East=%d West=%d", gotoparams.limiteast, gotoparams.limitwest);
 #else
     if (Hemisphere == NORTH)
     {
@@ -2014,6 +1994,7 @@ bool EQMod::Goto(double r, double d)
         gotoparams.limiteast        = zeroRAEncoder + (totalRAEncoder / 4) + (totalRAEncoder / 24); // ??
         gotoparams.limitwest        = zeroRAEncoder - (totalRAEncoder / 4) - (totalRAEncoder / 24); // ??
     }
+    LOGF_INFO("Setting Eqmod Goto encoder limits to East=%d West=%d", gotoparams.limiteast, gotoparams.limitwest);
 #endif
 
     if (gotoparams.pier_side != PIER_UNKNOWN)
